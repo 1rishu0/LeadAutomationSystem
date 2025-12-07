@@ -774,7 +774,21 @@ config = {
 # Load Google Sheets credentials
 def load_credentials(env_var, file_var, default_file):
     """Load credentials from env var or file"""
-    # First try environment variable
+    # First try base64 encoded environment variable (for deployment)
+    base64_var = env_var + '_BASE64'
+    encoded = os.getenv(base64_var)
+    if encoded:
+        logger.info(f"Loading {env_var} from base64 environment variable")
+        try:
+            import base64
+            decoded = base64.b64decode(encoded).decode('utf-8')
+            # Validate it's valid JSON
+            json.loads(decoded)
+            return decoded
+        except Exception as e:
+            logger.error(f"Failed to decode base64 credentials: {e}")
+    
+    # Try regular environment variable
     creds = os.getenv(env_var)
     if creds:
         logger.info(f"Loading {env_var} from environment variable")
