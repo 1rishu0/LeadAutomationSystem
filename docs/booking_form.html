@@ -144,10 +144,23 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="appointment">Preferred Date & Time *</label>
                 <input type="datetime-local" id="appointment" required>
-            </div>
+            </div> -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<input id="appointment" placeholder="Select date & time">
+
+<script>
+    flatpickr("#appointment", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today"
+    });
+</script>
+
 
             <button type="submit" id="submitBtn">
                 Book Appointment
