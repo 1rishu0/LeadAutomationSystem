@@ -13,7 +13,7 @@ Automated car dealership lead management system with AI-powered intent scoring.
 
 ## Live Demo
 
-- **Booking Form:** https://YOUR_USERNAME.github.io/lead-automation-system/
+- **Booking Form:** https://1rishu0.github.io/lead-automation-system/
 - **API Endpoint:** https://lead-automation-system-px7x.onrender.com/webhook/lead
 - **Dashboard:** https://lead-automation-system-px7x.onrender.com/dashboard
 - **Health Check:** https://lead-automation-system-px7x.onrender.com/health
