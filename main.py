@@ -844,6 +844,7 @@ def home():
     return "Lead Automation API is running", 200
 
 @app.route('/webhook/lead', methods=['POST'])
+@app.route('/webhook/lead/', methods=['POST'])
 @limiter.limit("10 per minute")
 def capture_lead():
     """
@@ -1012,5 +1013,6 @@ if __name__ == "__main__":
     logger.info(f"Debug mode: {debug}")
     
     app.run(host='0.0.0.0', port=port, debug=debug)
+
 
 
