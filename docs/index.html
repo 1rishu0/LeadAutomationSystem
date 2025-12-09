@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Test Drive - Lead Automation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        label .required {
+            color: #e74c3c;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input:hover,
+        select:hover {
+            border-color: #b0b0b0;
+        }
+        
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: linear-gradient(135deg, #ccc 0%, #aaa 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .message.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .message strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .message a {
+            color: inherit;
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span>🚗</span>
+                Book Your Test Drive
+            </h1>
+            <p>Fill in your details and we'll confirm your appointment</p>
+        </div>
+        
+        <form id="leadForm">
+            <div class="form-group">
+                <label for="name">
+                    Full Name <span class="required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name"
+                    placeholder="Enter your full name" 
+                    required
+                    autocomplete="name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    Email Address <span class="required">*</span>
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email"
+                    placeholder="your.email@example.com" 
+                    required
+                    autocomplete="email"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="phone">
+                    Phone Number <span class="required">*</span>
+                </label>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone"
+                    placeholder="+91-98765-43210" 
+                    required
+                    autocomplete="tel"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="car_model">
+                    Select Car Model <span class="required">*</span>
+                </label>
+                <select id="car_model" name="car_model" required>
+                    <option value="">-- Choose a model --</option>
+                    <option value="Tata Nexon EV">Tata Nexon EV</option>
+                    <option value="Mahindra XUV700">Mahindra XUV700</option>
+                    <option value="Hyundai Creta">Hyundai Creta</option>
+                    <option value="Kia Seltos">Kia Seltos</option>
+                    <option value="Maruti Suzuki Swift">Maruti Suzuki Swift</option>
+                    <option value="Toyota Fortuner">Toyota Fortuner</option>
+                    <option value="Honda City">Honda City</option>
+                    <option value="MG Hector">MG Hector</option>
+                    <option value="Tata Harrier">Tata Harrier</option>
+                    <option value="Hyundai Venue">Hyundai Venue</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="appointment">
+                    Preferred Date & Time <span class="required">*</span>
+                </label>
+                <input 
+                    type="datetime-local" 
+                    id="appointment" 
+                    name="appointment"
+                    required
+                >
+            </div>
+
+            <button type="submit" id="submitBtn">
+                Book Appointment
+            </button>
+        </form>
+
+        <div id="message"></div>
+
+        <div class="footer">
+            Powered by Lead Automation System
+        </div>
+    </div>
+
+    <script>
+        // Configuration - UPDATE THIS WITH YOUR RENDER URL
+        const API_URL = 'https://lead-automation-system-px7x.onrender.com/webhook/lead';
+        
+        // Set minimum date/time to now
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('appointment').min = now.toISOString().slice(0, 16);
+
+        // Form submission handler
+        document.getElementById('leadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                car_model: document.getElementById('car_model').value,
+                appointment_datetime: document.getElementById('appointment').value
+            };
+
+            const button = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            
+            // Disable button and show loading state
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner"></span>Processing...';
+            messageDiv.innerHTML = '';
+
+            try {
+                // Send request to API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Success message
+                    messageDiv.className = 'message success';
+                    messageDiv.innerHTML = `
+                        <strong>✅ Booking Confirmed!</strong>
+                        <div style="margin-top: 10px;">
+                            <strong>Name:</strong> ${formData.name}<br>
+                            <strong>Car Model:</strong> ${formData.car_model}<br>
+                            <strong>Intent Score:</strong> ${(result.intent_score * 100).toFixed(0)}%<br>
+                            <strong>Lead ID:</strong> ${result.lead_id}
+                            ${result.meet_link && result.meet_link !== 'https://meet.google.com/new' ? 
+                                `<br><strong>Meeting Link:</strong> <a href="${result.meet_link}" target="_blank">Join Meeting</a>` : 
+                                ''}
+                        </div>
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #c3e6cb;">
+                            📧 Check your email for full details and confirmation.
+                        </div>
+                    `;
+                    
+                    // Reset form
+                    e.target.reset();
+                    
+                    // Scroll to message
+                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    // Error message
+                    messageDiv.className = 'message error';
+                    messageDiv.innerHTML = `
+                        <strong>❌ Booking Failed</strong>
+                        <div style="margin-top: 10px;">
+                            ${result.errors && result.errors.length > 0 ? 
+                                result.errors.join('<br>') : 
+                                'Something went wrong. Please try again.'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                // Network error
+                messageDiv.className = 'message error';
+                messageDiv.innerHTML = `
+                    <strong>❌ Connection Error</strong>
+                    <div style="margin-top: 10px;">
+                        ${error.message}<br>
+                        Please check your internet connection and try again.
+                    </div>
+                `;
+                console.error('Error:', error);
+            } finally {
+                // Re-enable button
+                button.disabled = false;
+                button.textContent = 'Book Appointment';
+            }
+        });
+
+        // Form validation feedback
+        const inputs = document.querySelectorAll('input[required], select[required]');
+        inputs.forEach(input => {
+            input.addEventListener('invalid', (e) => {
+                e.preventDefault();
+                input.style.borderColor = '#e74c3c';
+            });
+            
+            input.addEventListener('input', () => {
+                input.style.borderColor = '#e0e0e0';
+            });
+        });
+    </script>
+</body>
+</html>
