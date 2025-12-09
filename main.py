@@ -917,6 +917,106 @@ def dashboard_data():
             'error': str(e)
         }), 500
 
+@app.route('/dashboard-view', methods=['GET'])
+def dashboard_view():
+    """Render live dashboard HTML"""
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lead Dashboard</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f8f9fa;
+                margin: 0;
+                padding: 20px;
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: white;
+                box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+            }
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background: #343a40;
+                color: white;
+            }
+            tr:hover {
+                background: #f1f1f1;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Live Lead Dashboard</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Car Model</th>
+                    <th>Appointment</th>
+                    <th>Intent Score</th>
+                </tr>
+            </thead>
+            <tbody id="lead-table-body">
+            </tbody>
+        </table>
+
+        <script>
+            async function loadDashboard() {
+                try {
+                    const response = await fetch('/dashboard');
+                    const data = await response.json();
+
+                    if (!data.success) return;
+
+                    const tbody = document.getElementById('lead-table-body');
+                    tbody.innerHTML = "";
+
+                    data.leads.forEach(lead => {
+                        const row = `
+                            <tr>
+                                <td>${lead.Timestamp || ""}</td>
+                                <td>${lead.Name || ""}</td>
+                                <td>${lead.Email || ""}</td>
+                                <td>${lead.Phone || ""}</td>
+                                <td>${lead["Car Model"] || ""}</td>
+                                <td>${lead.Appointment || ""}</td>
+                                <td>${lead["Intent Score"] || ""}</td>
+                            </tr>
+                        `;
+                        tbody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                } catch (e) {
+                    console.error("Error loading dashboard", e);
+                }
+            }
+
+            // Load every 5 seconds
+            loadDashboard();
+            setInterval(loadDashboard, 5000);
+        </script>
+
+    </body>
+    </html>
+    """
 
 @app.route('/lead/<lead_id>', methods=['GET'])
 def get_lead(lead_id):
@@ -1013,6 +1113,7 @@ if __name__ == "__main__":
     logger.info(f"Debug mode: {debug}")
     
     app.run(host='0.0.0.0', port=port, debug=debug)
+
 
 
 
